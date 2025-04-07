@@ -31,23 +31,40 @@ jobs:
 
       - name: Install Gradle Wrapper
         run: |
-          # Navigate to the root directory where build.gradle is located
-          cd app  # Assuming 'app' is the folder containing 'build.gradle' and 'settings.gradle'
+          # Create a build.gradle file if it doesn't exist
+          echo "buildscript {
+            repositories {
+              google()
+              mavenCentral()
+            }
+            dependencies {
+              classpath 'com.android.tools.build:gradle:7.0.0'
+            }
+          }
+
+          allprojects {
+            repositories {
+              google()
+              mavenCentral()
+            }
+          }" > build.gradle
+
+          # Create the settings.gradle if needed
+          echo "rootProject.name = 'SolidaritySMSApp'" > settings.gradle
+
+          # Generate gradle wrapper
           gradle wrapper  # Generate gradle wrapper
 
       - name: Grant execute permission for gradlew
         run: |
-          cd app  # Navigate to the 'app' directory
           chmod +x ./gradlew  # Make gradlew executable
 
       - name: Build APK
         run: |
-          cd app  # Navigate to the 'app' directory
           ./gradlew assembleDebug  # Build the APK using gradle
 
       - name: Check APK exists
         run: |
-          cd app  # Navigate to the 'app' directory
           ls -la app/build/outputs/apk/debug  # Check the location of the APK
 
       - name: Upload APK
