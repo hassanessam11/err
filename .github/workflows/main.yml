@@ -19,6 +19,11 @@ jobs:
           distribution: 'temurin'  # Use Temurin JDK
           java-version: '17'       # Use JDK 17
 
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v2
+        with:
+          sdk-version: '30.0.3'  # Specify Android SDK version
+
       - name: Install Gradle Wrapper
         run: |
           # Navigate to the root directory where build.gradle is located
