@@ -24,6 +24,11 @@ jobs:
         with:
           sdk-version: '30.0.3'  # Specify Android SDK version
 
+      - name: Install Android dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lib32stdc++6 lib32z1
+
       - name: Install Gradle Wrapper
         run: |
           # Navigate to the root directory where build.gradle is located
