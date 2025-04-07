@@ -29,9 +29,8 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y lib32stdc++6 lib32z1
 
-      - name: Install Gradle Wrapper
+      - name: Create build.gradle if missing
         run: |
-          # Create a build.gradle file if it doesn't exist
           echo "buildscript {
             repositories {
               google()
@@ -49,11 +48,12 @@ jobs:
             }
           }" > build.gradle
 
-          # Create the settings.gradle if needed
+      - name: Create settings.gradle if missing
+        run: |
           echo "rootProject.name = 'SolidaritySMSApp'" > settings.gradle
 
-          # Generate gradle wrapper
-          gradle wrapper  # Generate gradle wrapper
+      - name: Generate Gradle Wrapper
+        run: gradle wrapper  # Ensure gradle wrapper is created
 
       - name: Grant execute permission for gradlew
         run: |
@@ -61,7 +61,7 @@ jobs:
 
       - name: Build APK
         run: |
-          ./gradlew assembleDebug  # Build the APK using gradle
+          ./gradlew clean assembleDebug  # Clean and build the APK using gradle
 
       - name: Check APK exists
         run: |
