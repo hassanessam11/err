@@ -19,26 +19,26 @@ jobs:
           distribution: 'temurin'  # Use Temurin JDK
           java-version: '17'       # Use JDK 17
 
-      - name: Download Gradle Wrapper
-        run: |
-          # Download Gradle distribution
-          wget https://services.gradle.org/distributions/gradle-7.0-bin.zip
-          unzip gradle-7.0-bin.zip
-          export PATH=$PATH:$PWD/gradle-7.0/bin
-
       - name: Install Gradle Wrapper
         run: |
-          # Create the Gradle wrapper (this step ensures gradlew is created)
-          gradle wrapper
+          # Navigate to the root directory where build.gradle is located
+          cd app  # Assuming 'app' is the folder containing 'build.gradle' and 'settings.gradle'
+          gradle wrapper  # Generate gradle wrapper
 
       - name: Grant execute permission for gradlew
-        run: chmod +x ./gradlew  # Make gradlew executable
+        run: |
+          cd app  # Navigate to the 'app' directory
+          chmod +x ./gradlew  # Make gradlew executable
 
       - name: Build APK
-        run: ./gradlew assembleDebug  # Build the APK using gradle
+        run: |
+          cd app  # Navigate to the 'app' directory
+          ./gradlew assembleDebug  # Build the APK using gradle
 
       - name: Check APK exists
-        run: ls -la app/build/outputs/apk/debug  # Check the location of the APK
+        run: |
+          cd app  # Navigate to the 'app' directory
+          ls -la app/build/outputs/apk/debug  # Check the location of the APK
 
       - name: Upload APK
         uses: actions/upload-artifact@v4  # Upload the APK as an artifact
