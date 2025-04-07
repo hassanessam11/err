@@ -21,12 +21,18 @@ jobs:
 
       - name: Download Gradle Wrapper
         run: |
+          # Download Gradle distribution
           wget https://services.gradle.org/distributions/gradle-7.0-bin.zip
           unzip gradle-7.0-bin.zip
           export PATH=$PATH:$PWD/gradle-7.0/bin
 
+      - name: Install Gradle Wrapper
+        run: |
+          # Create the Gradle wrapper (this step ensures gradlew is created)
+          gradle wrapper
+
       - name: Grant execute permission for gradlew
-        run: chmod +x ./gradlew  # Make gradlew executable (optional but useful)
+        run: chmod +x ./gradlew  # Make gradlew executable
 
       - name: Build APK
         run: ./gradlew assembleDebug  # Build the APK using gradle
