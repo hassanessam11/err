@@ -8,7 +8,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest  # Use Ubuntu for the build environment
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3  # Checkout the code
@@ -19,8 +19,14 @@ jobs:
           distribution: 'temurin'  # Use Temurin JDK
           java-version: '17'       # Use JDK 17
 
+      - name: Download Gradle Wrapper
+        run: |
+          wget https://services.gradle.org/distributions/gradle-7.0-bin.zip
+          unzip gradle-7.0-bin.zip
+          export PATH=$PATH:$PWD/gradle-7.0/bin
+
       - name: Grant execute permission for gradlew
-        run: chmod +x ./gradlew  # Make gradlew executable
+        run: chmod +x ./gradlew  # Make gradlew executable (optional but useful)
 
       - name: Build APK
         run: ./gradlew assembleDebug  # Build the APK using gradle
@@ -32,4 +38,4 @@ jobs:
         uses: actions/upload-artifact@v4  # Upload the APK as an artifact
         with:
           name: app-debug.apk
-          path: app/build/outputs/apk/debug/app-debug.apk  # Path to the 
+          path: app/build/outputs/apk/debug/app-debug.apk  # Path to the APK
