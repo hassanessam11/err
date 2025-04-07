@@ -1,0 +1,35 @@
+name: Build APK
+
+on:
+  push:
+    branches:
+      - main  # Trigger on push to the 'main' branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # Use Ubuntu for the build environment
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3  # Checkout the code
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'  # Use Temurin JDK
+          java-version: '17'       # Use JDK 17
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x ./gradlew  # Make gradlew executable
+
+      - name: Build APK
+        run: ./gradlew assembleDebug  # Build the APK using gradle
+
+      - name: Check APK exists
+        run: ls -la app/build/outputs/apk/debug  # Check the location of the APK
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4  # Upload the APK as an artifact
+        with:
+          name: app-debug.apk
+          path: app/build/outputs/apk/debug/app-debug.apk  # Path to the 
